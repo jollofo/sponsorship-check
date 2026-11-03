@@ -11,6 +11,6 @@ createServer(async (req, res) => {
   if (path.startsWith('..') || !(path === '' || path === 'index.html' || path.startsWith('src'))) { res.writeHead(404).end(); return; }
   try {
     const file = join(root, path || 'index.html');
-    res.writeHead(200, { 'content-type': types[extname(file)] || 'text/plain' }).end(await readFile(file));
+    res.writeHead(200, { 'content-type': types[extname(file)] || 'text/plain', 'cache-control': 'no-store' }).end(await readFile(file));
   } catch { res.writeHead(404).end(); }
 }).listen(4173, '127.0.0.1', () => console.log('http://localhost:4173'));

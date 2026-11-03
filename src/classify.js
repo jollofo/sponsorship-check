@@ -53,25 +53,24 @@ export function sentences(text) {
 
 /**
  * @param {string} text posting description
- * @returns {{status: Status, quote: string | null, also: string[]}}
- *   quote: the sentence that decided the status; also: other sentences that mention visas or work authorization.
+ * @returns {{status: Status, quote: string | null, also: string[], student_visa: boolean}}
+ *   quote: the sentence that decided the status; also: other sentences that mention visas or work authorization;
+ *   student_visa: whether any of those sentences mentions OPT or CPT.
  */
 export function classify(text) {
   const relevant = sentences(text).filter(s => !IGNORE.some(r => r.test(s)));
-  for (const rule of RULES) {
-    const quote = relevant.find(rule.test);
-    if (quote) {
-      const also = relevant.filter(s => s !== quote && mentionsVisa(s));
-      return { status: rule.status, quote, also };
-    }
-  }
-  return { status: 'not_stated', quote: null, also: [] };
+  const rule = RULES.find(r => relevant.some(r.test));
+  const quote = rule ? relevant.find(rule.test) : null;
+  const also = relevant.filter(s => s !== quote && mentionsVisa(s));
+  const student_visa = [quote, ...also].some(s => s && /\b(OPT|CPT)\b/.test(s));
+  return { status: rule?.status ?? 'not_stated', quote, also, student_visa };
 }
 
+// Display order: the news a visa holder can act on first, the hard no's after, silence last.
 export const LABELS = {
-  citizens_only: 'US citizens only',
-  no_sponsorship: "Says it doesn't sponsor",
   sponsors: 'Says it sponsors',
   authorization_only: 'Asks for US work authorization',
+  no_sponsorship: "Says it doesn't sponsor",
+  citizens_only: 'US citizens only',
   not_stated: 'Not stated',
 };

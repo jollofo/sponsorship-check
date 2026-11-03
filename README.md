@@ -10,6 +10,7 @@ Rules, not AI. A posting only gets a label other than "Not stated" when one of i
 
 - When a posting says more than one thing, the strictest wins (citizens only, then doesn't sponsor, then sponsors, then work authorization). Other relevant sentences are shown underneath.
 - Sentences that only look relevant are skipped: equal-opportunity lists ("regardless of ... citizenship"), "employer-sponsored" benefits, and E-Verify posters.
+- Roles whose posting mentions OPT or CPT get an extra tag, since that's good news for students on F-1 visas.
 - The rules live in [`src/classify.js`](src/classify.js), and the tests use wording from real postings.
 
 ## What it found
@@ -35,3 +36,5 @@ npm start          # http://localhost:4173
 npm test
 npm run sample -- nyc engineering 6   # print counts and quotes for a metro and function
 ```
+
+On localhost, `?data=worst` (or `one`, `empty`, `error`, `huge`) swaps the live API for test data with the hardest real-world values: the longest titles and locations on the board, legal boilerplate, unbreakable URLs. A switch at the bottom of the page flips between them. The live site never loads it.

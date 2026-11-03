@@ -45,9 +45,20 @@ test('the strictest statement wins, and the rest are kept as context', () => {
   assert.deepEqual(both.also, ['You must be legally authorized to work in the US.']);
 });
 
+test('OPT and CPT mentions are flagged, even when nothing else is stated', () => {
+  assert.equal(classify('Other: Must have US work authorization or ability to use OPT during the time of your internship.').student_visa, true);
+  assert.equal(classify('- Applicants must be currently authorized to work in the United States on a full-time basis.').student_visa, false);
+  const quiet = classify('We build software. Candidates on OPT are welcome to apply.');
+  assert.equal(quiet.status, 'not_stated');
+  assert.equal(quiet.student_visa, true);
+  assert.deepEqual(quiet.also, ['Candidates on OPT are welcome to apply.']);
+  assert.equal(classify('Please opt in to updates.').student_visa, false);
+});
+
 test('empty or missing text is not stated', () => {
-  assert.deepEqual(classify(''), { status: 'not_stated', quote: null, also: [] });
-  assert.deepEqual(classify(undefined), { status: 'not_stated', quote: null, also: [] });
+  const none = { status: 'not_stated', quote: null, also: [], student_visa: false };
+  assert.deepEqual(classify(''), none);
+  assert.deepEqual(classify(undefined), none);
 });
 
 test('splits on sentences and list items', () => {
