@@ -33,7 +33,12 @@
   body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
   main { max-width: 860px; margin: 0 auto; padding: 40px 16px 64px; }
   h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 0 8px; letter-spacing: -0.01em; }
-  .lede { color: var(--muted); margin: 0 0 28px; max-width: 62ch; }
+  .lede { color: var(--muted); margin: 0 0 14px; max-width: 62ch; }
+  .why { margin: 0 0 28px; max-width: 62ch; color: var(--muted); }
+  .why summary { cursor: pointer; color: var(--accent); width: fit-content; }
+  .why dl { margin: 12px 0 0; display: grid; gap: 4px; }
+  .why dt { color: var(--text); font-weight: 600; margin-top: 8px; }
+  .why dd { margin: 0; }
   form { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; margin-bottom: 24px; }
   label { display: grid; gap: 4px; font-size: 0.8rem; color: var(--muted); }
   select, input, form button { font: inherit; font-size: 1rem; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--text); }
@@ -81,7 +86,21 @@
 <body>
 <main>
   <h1>Does this role sponsor visas?</h1>
-  <p class="lede">For each startup role, this shows what the posting itself says about sponsorship, with the sentence quoted. If a posting doesn't say it plainly, the answer is "Not stated", never a guess. Roles come live from the <a href="https://speedrun-talent-network.com/developers">a16z speedrun jobs API</a>.</p>
+  <p class="lede">If you need a visa, the first question about any job is "will they sponsor?", and the posting almost never says. Applications ask whether you'll need sponsorship, not whether the company offers it, so you often find out only after you've applied. This reads live startup postings and shows what each one says, with the sentence quoted.</p>
+
+  <details class="why">
+    <summary>Why it works this way</summary>
+    <dl>
+      <dt>Quotes, not summaries</dt>
+      <dd>Every label shows the sentence it came from, so you can check it in a second instead of trusting a tool.</dd>
+      <dt>Rules, not AI</dt>
+      <dd>A model can read a vague line as a "yes", and a wrong yes costs an applicant weeks. Rules only label what a sentence says outright. They skip lines that just look relevant, like equal-opportunity lists that mention citizenship, and leave everything else as "Not stated".</dd>
+      <dt>This role, not past filings</dt>
+      <dd>Public H-1B records show whether a company sponsored someone before, not whether this role will. They're a good second check, not an answer.</dd>
+      <dt>What text can't fix</dt>
+      <dd>Most postings say nothing: 258 of 268 New York engineering roles on 2 Nov 2026. Only the company can answer those, so the real fix is one "do you sponsor?" field when a role is posted. Until then, this covers what postings do say.</dd>
+    </dl>
+  </details>
 
   <form id="search">
     <label>Where
@@ -120,7 +139,7 @@
   <ol id="results"></ol>
 
   <footer>
-    Rules, not AI: a role only gets a status other than "Not stated" when a sentence in its posting says so, and that sentence is shown. Equal-opportunity boilerplate ("regardless of citizenship") is ignored. Checks up to 300 roles at a time. Always confirm with the company.
+    Roles come live from the <a href="https://speedrun-talent-network.com/developers">a16z speedrun jobs API</a>, up to 300 at a time. Always confirm with the company.
     Built by <a href="https://jmuguiyi.com">James Muguiyi</a>.
   </footer>
 </main>
