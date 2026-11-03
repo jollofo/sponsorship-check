@@ -12,7 +12,6 @@ const MAX_PAGES = 6; // 50 roles a page
 const form = document.getElementById('search');
 const results$ = document.getElementById('results-area');
 const headline = document.getElementById('headline');
-const breakdown = document.getElementById('breakdown');
 const summary = document.getElementById('summary');
 const status = document.getElementById('status');
 const list = document.getElementById('results');
@@ -57,12 +56,6 @@ function renderSummary() {
   if (!results.length) return;
   const ruledOut = count('citizens_only') + count('no_sponsorship');
   headline.textContent = `${num(results.length - ruledOut)} of ${plural(results.length, 'role', 'roles')} ${results.length - ruledOut === 1 ? "doesn't" : "don't"} rule out sponsorship.`;
-  breakdown.textContent = [
-    `${plural(count('sponsors'), 'says', 'say')} it sponsors`,
-    `${count('authorization_only')} ${count('authorization_only') === 1 ? 'asks' : 'ask'} for existing US work authorization`,
-    `${ruledOut} ${ruledOut === 1 ? 'rules' : 'rule'} it out`,
-    `${count('not_stated')} don't say`,
-  ].join(' · ') + '.';
   for (const [s, { chip, n }] of Object.entries(chips)) {
     const c = count(s);
     n.textContent = String(c);
@@ -82,7 +75,7 @@ function roleCard({ job, status: s, quote, also, student_visa }) {
         el('span', { class: `badge s-${s}` }, LABELS[s]))),
     quote
       ? el('blockquote', {}, '“', ...highlight(quote), '”')
-      : el('p', { class: 'silent' }, 'The posting has no sentence about visas or work authorization.'),
+      : el('p', { class: 'silent' }, 'No mention of visas or work authorization.'),
     ...also.map(a => el('blockquote', { class: 'also' }, 'Also: “', ...highlight(a), '”')));
 }
 

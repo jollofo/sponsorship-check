@@ -36,9 +36,7 @@
   .lede { color: var(--muted); margin: 0 0 14px; max-width: 62ch; }
   .why { margin: 0 0 28px; max-width: 62ch; color: var(--muted); }
   .why summary { cursor: pointer; color: var(--accent); width: fit-content; }
-  .why dl { margin: 12px 0 0; display: grid; gap: 4px; }
-  .why dt { color: var(--text); font-weight: 600; margin-top: 8px; }
-  .why dd { margin: 0; }
+  .why ul { margin: 8px 0 0; padding-left: 1.2em; display: grid; gap: 2px; }
   form { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; margin-bottom: 24px; }
   label { display: grid; gap: 4px; font-size: 0.8rem; color: var(--muted); }
   select, input, form button { font: inherit; font-size: 1rem; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--text); }
@@ -50,8 +48,7 @@
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   ::selection { background: color-mix(in srgb, var(--accent) 28%, transparent); }
   .status { margin: 0 0 16px; color: var(--muted); font-size: 0.9rem; min-height: 1.5em; }
-  .results-head h2 { font-size: 1.4rem; line-height: 1.25; margin: 0 0 4px; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; text-wrap: balance; }
-  .breakdown { margin: 0 0 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .results-head h2 { font-size: 1.4rem; line-height: 1.25; margin: 0 0 14px; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; text-wrap: balance; }
   .summary { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 20px; padding: 0; list-style: none; }
   .chip { font: inherit; font-size: 0.9rem; display: inline-flex; gap: 6px; align-items: center; min-height: 36px; border: 1px solid currentColor; border-radius: 999px; padding: 6px 14px; cursor: pointer; }
   .chip .n { font-weight: 700; font-variant-numeric: tabular-nums; }
@@ -86,20 +83,15 @@
 <body>
 <main>
   <h1>Does this role sponsor visas?</h1>
-  <p class="lede">If you need a visa, the first question about any job is "will they sponsor?", and the posting almost never says. Applications ask whether you'll need sponsorship, not whether the company offers it, so you often find out only after you've applied. This reads live startup postings and shows what each one says, with the sentence quoted.</p>
+  <p class="lede">Most postings never say whether they sponsor. This shows what each one does say, quoted, so you can skip the dead ends.</p>
 
   <details class="why">
-    <summary>Why it works this way</summary>
-    <dl>
-      <dt>Quotes, not summaries</dt>
-      <dd>Every label shows the sentence it came from, so you can check it in a second instead of trusting a tool.</dd>
-      <dt>Rules, not AI</dt>
-      <dd>A model can read a vague line as a "yes", and a wrong yes costs an applicant weeks. Rules only label what a sentence says outright. They skip lines that just look relevant, like equal-opportunity lists that mention citizenship, and leave everything else as "Not stated".</dd>
-      <dt>This role, not past filings</dt>
-      <dd>Public H-1B records show whether a company sponsored someone before, not whether this role will. They're a good second check, not an answer.</dd>
-      <dt>What text can't fix</dt>
-      <dd>Most postings say nothing: 258 of 268 New York engineering roles on 2 Nov 2026. Only the company can answer those, so the real fix is one "do you sponsor?" field when a role is posted. Until then, this covers what postings do say.</dd>
-    </dl>
+    <summary>How it decides</summary>
+    <ul>
+      <li>Every label quotes the posting, so you can check it.</li>
+      <li>Rules, not AI: no clear sentence, no label.</li>
+      <li>Most postings say nothing. Only the company can fix that.</li>
+    </ul>
   </details>
 
   <form id="search">
@@ -133,14 +125,12 @@
   <p class="status" id="status" role="status"></p>
   <section class="results-head" id="results-area" hidden aria-live="polite">
     <h2 id="headline"></h2>
-    <p class="breakdown" id="breakdown"></p>
   </section>
   <ul class="summary" id="summary" role="group" aria-label="Show roles by what the posting says"></ul>
   <ol id="results"></ol>
 
   <footer>
-    Roles come live from the <a href="https://speedrun-talent-network.com/developers">a16z speedrun jobs API</a>, up to 300 at a time. Always confirm with the company.
-    Built by <a href="https://jmuguiyi.com">James Muguiyi</a>.
+    Live roles from the <a href="https://speedrun-talent-network.com/developers">a16z speedrun jobs API</a> · Built by <a href="https://jmuguiyi.com">James Muguiyi</a>
   </footer>
 </main>
 <script type="module" src="src/app.js"></script>
